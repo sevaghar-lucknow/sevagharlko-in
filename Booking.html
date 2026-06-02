@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Kare - SevaGhar</title>
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        input, select, textarea {
+            width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #ddd;
+            border-radius: 8px; font-size: 16px; font-family: Arial, sans-serif;
+            box-sizing: border-box; background-color: white;
+        }
+        select { cursor: pointer; }
+    .btn {
+            background: #4CAF50; color: white; padding: 14px; border: none;
+            border-radius: 8px; font-size: 18px; font-weight: bold;
+            cursor: pointer; width: 100%; margin-top: 10px;
+        }
+    .btn:hover { background: #45a049; }
+    .btn:disabled { background: #999; cursor: not-allowed; }
+    .card {
+            max-width: 500px; margin: 20px auto; padding: 25px;
+            background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        body { background: #f5f5f5; font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        header { text-align: center; margin-bottom: 20px; }
+    .logo { font-size: 28px; font-weight: bold; color: #2E7D32; }
+    .success-msg {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    .warning-msg {
+            display: none;
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    .pin-box {
+            background: #fef3c7;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border: 1px solid #fbbf24;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">SevaGhar</div>
+        <div class="call"><a href="./index.html">← Wapas Home</a></div>
+    </header>
+
+    <section class="services">
+        <h2 style="text-align: center;" id="pageHeading">Service Book Kare - 2 Min Me</h2>
+        <div class="card">
+            <form id="bookingForm">
+                <input type="text" name="naam" placeholder="Aapka Naam *" required>
+                <input type="tel" name="phone" placeholder="Mobile Number *" pattern="[0-9]{10}" required>
+                <input type="text" name="address" placeholder="Ghar ka Poora Address *" required>
+                
+                <select name="pincode" required>
+                    <option value="" disabled selected>Apna Area Chunein *</option>
+                    <option value="226001 - Hazratganj">226001 - Hazratganj</option>
+                    <option value="226003 - Chowk">226003 - Chowk</option>
+                    <option value="226004 - Aishbagh">226004 - Aishbagh</option>
+                    <option value="226005 - Alambagh">226005 - Alambagh</option>
+                    <option value="226006 - Daliganj">226006 - Daliganj</option>
+                    <option value="226007 - Cantt">226007 - Cantt</option>
+                    <option value="226008 - Amausi">226008 - Amausi</option>
+                    <option value="226009 - Transport Nagar">226009 - Transport Nagar</option>
+                    <option value="226010 - Gomti Nagar">226010 - Gomti Nagar</option>
+                    <option value="226012 - Aashiana">226012 - Aashiana</option>
+                    <option value="226013 - IIM Mubarakpur">226013 - IIM Mubarakpur</option>
+                    <option value="226016 - Indira Nagar">226016 - Indira Nagar</option>
+                    <option value="226018 - Aminabad">226018 - Aminabad</option>
+                    <option value="226020 - Mahanagar">226020 - Mahanagar</option>
+                    <option value="226021 - Jankipuram">226021 - Jankipuram</option>
+                    <option value="226022 - Vikas Nagar">226022 - Vikas Nagar</option>
+                    <option value="226024 - Aliganj">226024 - Aliganj</option>
+                    <option value="226026 - Kursi Road">226026 - Kursi Road</option>
+                    <option value="227105 - Chinhat">227105 - Chinhat</option>
+                </select>
+                
+                <select name="service" required>
+                    <option value="" disabled selected>Service Chune *</option>
+                    <option value="AC Service">AC Service</option>
+                    <option value="RO Service">RO Service</option>
+                    <option value="Plumber">Plumber</option>
+                    <option value="Electrician">Electrician</option>
+		    <option value="Chef/Cook">Chef/Cook</option>
+                    <option value="Party Decoration">Party Decoration</option>
+                </select>
+                
+                <input type="text" name="time" placeholder="Problem kya? Kab Chahiye? Ex: Kal 11 baje" required>
+
+                <!-- PIN FIELD ADDED -->
+                <div class="pin-box">
+                    <label style="font-weight:bold;font-size:14px">🔐 4-Digit Security PIN Banao *</label>
+                    <input type="password" name="custPin" placeholder="1234" maxlength="4" pattern="[0-9]{4}" required style="margin-top:5px">
+                    <p style="font-size:12px;color:#92400e;margin:5px 0 0 0">
+                        Ye PIN se aap apni booking track kar paoge. Yaad rakho!
+                    </p>
+                </div>
+
+                <button type="submit" class="btn" id="submitBtn">Booking Confirm Kare</button>
+            </form>
+            
+            <div class="success-msg" id="successMsg">
+                ✅ Thanks for contacting SevaGhar! <br>
+                Aapki booking confirm ho gayi hai. Hum 10 minute me aapko call karenge.
+            </div>
+
+            <div class="warning-msg" id="warningMsg">
+                📲 Aapki booking pending me save ho gayi hai! <br>
+                Internet ON hote hi automatically confirm ho jayegi. Hum aapko call karenge.
+            </div>
+            
+            <p style="margin-top: 15px; font-size: 14px; text-align: center;" id="infoText">Form bharte hi hum aapko 10 min me call karenge</p>
+        </div>
+
+        <!-- PENDING BOOKINGS WALA SECTION -->
+        <div class="card" style="margin-top: 20px;">
+            <h3>📋 Pending Bookings: <span id="pendingCount">0</span></h3>
+            <div id="pendingList"></div>
+            <button onclick="syncAbhi()" class="btn" id="syncBtn" style="background: #2196F3; display: none; margin-top:10px;">
+                Net ON Hai? Sab Sync Karo
+            </button>
+        </div>
+    </section>
+
+    <footer style="text-align: center; margin-top: 30px; color: #666;">
+        <p>© 2026 SevaGhar Lucknow</p>
+	<p>Udyam Reg: UDYAM-UP-50-0272690</p>
+    </footer>
+
+    <script>
+    let scriptURL = 'https://script.google.com/macros/s/AKfycbwUQBQCbqW84qApOlGeO3g50watagAo2TqmEvBcC1kia4Ju9BpfX14r8b5EpPDmvCSh/exec';
+
+    function sheetMeBhej(data) {
+        return fetch(scriptURL, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: JSON.stringify(data)
+        });
+    }
+
+    function offlineBookingSyncKaro() {
+        let offlineBookings = JSON.parse(localStorage.getItem('sevaGharOfflineBookings') || '[]');
+        if (offlineBookings.length > 0 && navigator.onLine) {
+            offlineBookings.forEach((booking) => {
+                sheetMeBhej(booking);
+            });
+            localStorage.removeItem('sevaGharOfflineBookings');
+            showPendingBookings();
+        }
+    }
+
+    window.addEventListener('online', offlineBookingSyncKaro);
+    offlineBookingSyncKaro();
+
+    // FORM SUBMIT - PIN VALIDATION ADDED
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        let btn = document.getElementById('submitBtn');
+        let custPin = document.querySelector('[name="custPin"]').value;
+        
+        // PIN Check
+        if(custPin.length!== 4 ||!/^[0-9]+$/.test(custPin)){
+          alert('4 digit ka PIN daalo');
+          return;
+        }
+        
+        btn.disabled = true;
+        btn.innerText = 'Booking Ho Rahi Hai...';
+        
+        let formData = {
+            naam: document.querySelector('[name="naam"]').value,
+            phone: document.querySelector('[name="phone"]').value,
+            address: document.querySelector('[name="address"]').value,
+            pincode: document.querySelector('[name="pincode"]').value,
+            service: document.querySelector('[name="service"]').value,
+            time: document.querySelector('[name="time"]').value,
+            custPin: custPin, // ← PIN add kiya
+            timestamp: new Date().toLocaleString()
+        };
+        
+        // STEP 1: CHECK KARO NET HAI YA NAHI
+        if (navigator.onLine) {
+            // ONLINE HAI: WhatsApp kholo
+            let message = `*🔔 New SevaGhar Booking*%0A%0A*Naam:* ${formData.naam}%0A*Phone:* ${formData.phone}%0A*Address:* ${formData.address}%0A*Area:* ${formData.pincode}%0A*Service:* ${formData.service}%0A*Time/Problem:* ${formData.time}%0A*PIN:* ${formData.custPin}`;
+            let waLink = `https://wa.me/918765481479?text=${message}`;
+            window.open(waLink, '_blank'); 
+            
+            // STEP 2: SHEET ME BHEJ
+            sheetMeBhej(formData).then(response => {
+                document.getElementById('pageHeading').innerText = '✅ Booking Confirmed';
+                document.getElementById('bookingForm').style.display = 'none';
+                document.getElementById('infoText').style.display = 'none';
+                document.getElementById('successMsg').style.display = 'block';
+            }).catch(error => {
+                // Agar sheet me nahi gaya to pending me daal de
+                let offlineBookings = JSON.parse(localStorage.getItem('sevaGharOfflineBookings') || '[]');
+                offlineBookings.push(formData);
+                localStorage.setItem('sevaGharOfflineBookings', JSON.stringify(offlineBookings));
+                
+                document.getElementById('pageHeading').innerText = '📲 Booking Saved';
+                document.getElementById('bookingForm').style.display = 'none';
+                document.getElementById('infoText').style.display = 'none';
+                document.getElementById('warningMsg').style.display = 'block';
+                showPendingBookings();
+            }).finally(() => {
+                btn.disabled = false;
+                btn.innerText = 'Booking Confirm Kare';
+            });
+        } else {
+            // OFFLINE HAI: WhatsApp mat kholo, sidha pending me save karo
+            let offlineBookings = JSON.parse(localStorage.getItem('sevaGharOfflineBookings') || '[]');
+            offlineBookings.push(formData);
+            localStorage.setItem('sevaGharOfflineBookings', JSON.stringify(offlineBookings));
+            
+            document.getElementById('pageHeading').innerText = '📲 Booking Saved';
+            document.getElementById('bookingForm').style.display = 'none';
+            document.getElementById('infoText').style.display = 'none';
+            document.getElementById('warningMsg').style.display = 'block';
+            showPendingBookings();
+            
+            btn.disabled = false;
+            btn.innerText = 'Booking Confirm Kare';
+        }
+    });
+
+    // NAYE FUNCTIONS - OFFLINE BOOKING KE LIYE
+    function showPendingBookings() {
+        let bookings = JSON.parse(localStorage.getItem('sevaGharOfflineBookings') || '[]');
+        let listDiv = document.getElementById('pendingList');
+        let countSpan = document.getElementById('pendingCount');
+        let syncBtn = document.getElementById('syncBtn');
+        
+        countSpan.innerText = bookings.length;
+        
+        if(bookings.length === 0) {
+            listDiv.innerHTML = '<p style="color: #666;">Koi pending booking nahi hai</p>';
+            syncBtn.style.display = 'none';
+        } else {
+            listDiv.innerHTML = bookings.map((b, i) => `
+                <div style="border: 1px solid #ddd; padding: 10px; margin: 5px 0; border-radius: 5px;">
+                    <b>${b.naam}</b> - ${b.phone}<br>
+                    <small>${b.service} | ${b.timestamp}</small><br>
+                    <button onclick="sendWhatsapp(${i})" style="margin-top:5px; padding:5px 10px; background:#25D366; color:white; border:none; border-radius:4px;">WhatsApp Bhejo</button>
+                </div>
+            `).join('');
+            syncBtn.style.display = 'block';
+        }
+    }
+
+    function sendWhatsapp(index) {
+        let bookings = JSON.parse(localStorage.getItem('sevaGharOfflineBookings') || '[]');
+        let b = bookings[index];
+        let message = `*🔔 New SevaGhar Booking*%0A%0A*Naam:* ${b.naam}%0A*Phone:* ${b.phone}%0A*Address:* ${b.address}%0A*Area:* ${b.pincode}%0A*Service:* ${b.service}%0A*Time/Problem:* ${b.time}%0A*PIN:* ${b.custPin}`;
+        window.open(`https://wa.me/918765481479?text=${message}`, '_blank');
+    }
+
+    function syncAbhi() {
+        let bookings = JSON.parse(localStorage.getItem('sevaGharOfflineBookings') || '[]');
+        if(bookings.length === 0) return;
+        
+        let btn = document.getElementById('syncBtn');
+        btn.disabled = true;
+        btn.innerText = 'Sync Ho Raha Hai...';
+        
+        let promises = bookings.map(b => sheetMeBhej(b));
+        
+        Promise.all(promises).then(() => {
+            localStorage.removeItem('sevaGharOfflineBookings');
+            alert('✅ Saari pending bookings Sheet me chali gayi!');
+            showPendingBookings();
+        }).catch(() => {
+            alert('❌ Net slow hai. Baad me try kar.');
+        }).finally(() => {
+            btn.disabled = false;
+            btn.innerText = 'Net ON Hai? Sab Sync Karo';
+        });
+    }
+
+    // Page load pe pending booking dikha de
+    showPendingBookings();
+    </script>
+</body>
+</html>

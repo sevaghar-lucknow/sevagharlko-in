@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Order - SevaGhar</title>
+    <link rel="stylesheet" href="./style.css">
+    <meta name="theme-color" content="#1e3a8a">
+    <style>
+    .container{max-width:600px;margin:20px auto;padding:20px}
+    .card{background:#fff;padding:15px;margin:10px 0;border-radius:8px;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
+      input,button{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:5px;font-size:16px}
+      button{background:#1e3a8a;color:#fff;border:none;cursor:pointer}
+      button:disabled{background:#ccc}
+    .status{padding:5px 10px;border-radius:20px;font-size:12px;font-weight:bold;display:inline-block}
+    .pending{background:#fef3c7;color:#92400e}
+    .assigned{background:#dbeafe;color:#1e40af}
+    .completed{background:#d1fae5;color:#065f46}
+    .cancelled{background:#fee2e2;color:#991b1b}
+    .booking-card{border-left:4px solid #1e3a8a}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media(max-width:480px){.grid-2{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Apni Booking Track Kare</h2>
+        
+        <!-- Phone + PIN Input - UPDATED -->
+        <div class="card">
+            <h3>Secure Login</h3>
+            <div class="grid-2">
+                <input type="tel" id="phoneInput" placeholder="10 digit mobile" maxlength="10" pattern="[0-9]{10}">
+                <input type="password" id="pinInput" placeholder="4 digit PIN" maxlength="4" pattern="[0-9]{4}">
+            </div>
+            <button onclick="trackOrder()" id="trackBtn">Login & Track</button>
+            <p id="trackMsg" style="margin-top:10px;font-size:14px"></p>
+            <p style="font-size:12px;color:#666;margin-top:8px">
+                PIN bhool gaye? Call kare +918765481479
+            </p>
+        </div>
+
+        <!-- Booking List -->
+        <div id="bookingList"></div>
+
+        <div style="text-align:center;margin-top:20px">
+            <a href="./index.html">← Back to Home</a>
+        </div>
+    </div>
+
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyg4ODUSWmfFFZez6duqwFzilWgodsiZCHR5t1xVfpETGcXa9p-uih7eTg9ieqk0ifj4g/exec';
+
+function trackOrder(){
+  const phone = document.getElementById('phoneInput').value.trim();
+  const pin = document.getElementById('pinInput').value.trim();
+  
+  if(phone.length!== 10 ||!/^[0-9]+$/.test(phone)){
+    document.getElementById('trackMsg').innerText = 'Sahi 10 digit number daalo';
+    document.getElementById('trackMsg').style.color = '#dc2626';
+    return;
+  }
+  if(pin.length!== 4 ||!/^[0-9]+$/.test(pin)){
+    document.getElementById('trackMsg').innerText = '4 digit PIN daalo';
+    document.getElementById('trackMsg').style.color = '#dc2626';
+    return;
+  }
+
+  document.getElementById('trackMsg').innerText = 'Login ho raha hai...';
+  document.getElementById('trackMsg').style.color = '#1e3a8a';
+  document.getElementById('trackBtn').disabled = true;
+
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    body: new URLSearchParams({action: 'customerLogin', phone: phone, pin: pin})
+  })
+.then(res => res.json())
+.then(data => {
+    document.getElementById('trackBtn').disabled = false;
+    if(data.status === 'fail'){
+      document.getElementById('trackMsg').innerText = 'Galat Phone ya PIN';
+      document.getElementById('trackMsg').style.color = '#dc2626';
+      document.getElementById('bookingList').innerHTML = '';
+      return;
+    }
+    
+    document.getElementById('trackMsg').innerText = `${data.bookings.length} booking mili`;
+    document.getElementById('trackMsg').style.color = '#059669';
+    
+    let html = '';
+    data.bookings.forEach(booking => {
+      let statusClass = 'pending';
+      let statusText = 'Pending';
+      
+      if(booking.status === 'Assigned'){
+        statusClass = 'assigned';
+        statusText = `Mistri Assigned: ${booking.empName || 'Processing'}`;
+      } else if(booking.status === 'Completed' || booking.status === 'Billed'){
+        statusClass = 'completed';
+        statusText = 'Completed';
+      } else if(booking.status === 'Cancelled'){
+        statusClass = 'cancelled';
+        statusText = 'Cancelled';
+      }
+
+      html += `<div class="card booking-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <b>Order #${booking.orderId}</b>
+          <span class="status ${statusClass}">${statusText}</span>
+        </div>
+        <p style="margin:6px 0"><b>Service:</b> ${booking.service}</p>
+        <p style="margin:6px 0"><b>Address:</b> ${booking.address}</p>
+        <p style="margin:6px 0"><b>Date:</b> ${booking.date}</p>
+        ${booking.finalBill? `<p style="margin:6px 0"><b>Final Bill:</b> ₹${booking.finalBill}</p>` : ''}
+        ${booking.pdfUrl? `<button onclick="window.open('${booking.pdfUrl}','_blank')" style="background:#059669;margin-top:8px">Download Bill PDF</button>` : ''}
+      </div>`;
+    });
+    document.getElementById('bookingList').innerHTML = html;
+  })
+.catch(err => {
+    document.getElementById('trackBtn').disabled = false;
+    document.getElementById('trackMsg').innerText = 'Offline: Net connect karke try karo';
+    document.getElementById('trackMsg').style.color = '#dc2626';
+  });
+}
+
+// Enter key se bhi track ho jaye
+document.getElementById('pinInput').addEventListener('keypress', function(e){
+  if(e.key === 'Enter') trackOrder();
+});
+</script>
+</body>
+</html>

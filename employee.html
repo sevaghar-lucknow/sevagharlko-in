@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Login - SevaGhar</title>
+    <link rel="stylesheet" href="./style.css">
+    <meta name="theme-color" content="#1e3a8a">
+    <style>
+      :root{
+        --blue:#1e3a8a;
+        --green:#059669;
+        --red:#dc2626;
+        --bg:#f1f5f9;
+        --card:#ffffff;
+        --text:#1f2937;
+      }
+
+      /* RESET */
+      body{
+        margin:0;
+        font-family:sans-serif;
+        background:var(--bg);
+        color:var(--text);
+        font-size:16px;
+      }
+
+      /* HEADER */
+     .header{
+        position:sticky;
+        top:0;
+        background:var(--blue);
+        color:#fff;
+        padding:12px 16px;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        z-index:1000;
+        box-shadow:0 2px 8px rgba(0,0,0,0.1);
+      }
+     .header button{
+        background:#fff;
+        color:var(--blue);
+        border:none;
+        padding:8px 12px;
+        border-radius:8px;
+        width:auto;
+        margin:0 0 0 8px;
+        font-weight:600;
+      }
+
+      /* LAYOUT */
+     .container{
+        padding:12px;
+        padding-bottom:80px;
+        max-width:500px;
+        margin:auto;
+      }
+
+      /* CARD */
+     .card{
+        background:var(--card);
+        padding:16px;
+        border-radius:14px;
+        margin-bottom:12px;
+        box-shadow:0 4px 10px rgba(0,0,0,0.08);
+      }
+      h2,h3,h4{margin:8px 0;color:var(--blue)}
+      h2{margin-bottom:16px}
+
+      /* INPUT */
+      input,textarea,button{
+        width:100%;
+        padding:14px;
+        margin-top:10px;
+        border-radius:10px;
+        border:1px solid #ddd;
+        font-size:16px;
+        box-sizing:border-box;
+      }
+      input:focus,textarea:focus{
+        outline:2px solid var(--blue);
+        border-color:var(--blue);
+      }
+
+      /* BUTTON */
+      button{
+        background:var(--blue);
+        color:#fff;
+        border:none;
+        min-height:48px;
+        cursor:pointer;
+        font-weight:600;
+      }
+      button:disabled{background:#ccc;cursor:not-allowed}
+     .btn-green{background:var(--green)}
+     .btn-gray{background:#666}
+     .btn-danger{background:var(--red);width:auto;padding:8px 12px;min-height:auto;font-size:14px}
+
+      /* ORDER CARD */
+     .order-card{
+        padding:14px;
+        border-radius:12px;
+        background:#fff;
+        margin-top:12px;
+        box-shadow:0 2px 6px rgba(0,0,0,0.08);
+      }
+     .order-card b{color:var(--blue);font-size:17px}
+     .order-card button{margin-top:12px}
+
+      /* BILL TABLE MOBILE FIX */
+     .table-wrap{
+        overflow-x:auto;
+        margin:10px 0;
+        border:1px solid #eee;
+        border-radius:8px;
+      }
+      table{
+        width:100%;
+        border-collapse:collapse;
+        min-width:400px;
+      }
+      th,td{
+        border:1px solid #eee;
+        padding:10px;
+        font-size:14px;
+      }
+      th{background:#f8fafc;font-weight:600;text-align:left}
+      table input{
+        width:100%;
+        padding:10px;
+        margin:0;
+        border:1px solid #ddd;
+      }
+
+      /* DARK MODE */
+     .dark{
+        --bg:#0f172a;
+        --card:#1e293b;
+        --text:#e2e8f0;
+      }
+     .dark input,.dark textarea,.dark table input{
+        background:#0f172a;
+        color:#fff;
+        border:1px solid #334155;
+      }
+     .dark table th{background:#0f172a}
+     .dark table th,.dark table td{border-color:#334155}
+     .dark.table-wrap{border-color:#334155}
+     .dark.order-card{background:#1e293b}
+
+     .hidden{display:none}
+      a{color:var(--blue);text-decoration:none;font-weight:600}
+      #loginMsg,#updateMsg{margin:8px 0;font-weight:600}
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div id="header" class="header hidden">
+  <span>👨‍🔧 <span id="empName"></span></span>
+  <div>
+    <button onclick="toggleDark()">🌙</button>
+    <button onclick="logout()">Logout</button>
+  </div>
+</div>
+
+<div class="container">
+    <h2>SevaGhar Employee Portal</h2>
+
+    <!-- Login Form -->
+    <div id="loginDiv" class="card">
+	<h3>Login Kare</h3>
+	<input type="email" id="email" placeholder="Email" autocomplete="off">
+    	<input type="password" id="password" placeholder="Password" autocomplete="new-password">
+    	<button onclick="login()" id="loginBtn">Login</button>
+    	<p id="loginMsg"></p>
+	</div>
+
+    <!-- Order List -->
+    <div id="orderDiv" class="hidden">
+        <button class="btn-green" onclick="loadOrders()" style="margin-bottom:15px;">🔄 Refresh Orders</button>
+        <h4>Aapke Pending Orders:</h4>
+        <div id="orderList"></div>
+    </div>
+
+    <!-- Update Bill Form -->
+    <div id="updateDiv" class="card hidden">
+        <h3>Bill Update Kare - Order #<span id="orderIdSpan"></span></h3>
+        <p><b>Customer:</b> <span id="custName"></span></p>
+        <p><b>Service:</b> <span id="serviceName"></span></p>
+        <textarea id="techNote" placeholder="Kya kaam hua? Jaise: Gas filling + cleaning" rows="3"></textarea>
+
+        <!-- STEP 1: Dynamic Bill Table Added -->
+        <h4>Bill Items:</h4>
+        <div class="table-wrap">
+          <table id="billTable">
+            <tr>
+              <th>Item Name</th>
+              <th>Amount ₹</th>
+              <th>Action</th>
+            </tr>
+          </table>
+        </div>
+        <button type="button" class="btn-green" onclick="addBillRow()">+ Add Item</button>
+        <h4>Total Amount: ₹<span id="totalAmount">0</span></h4>
+
+        <button onclick="updateBill()" id="submitBtn">Bill Submit Kare</button>
+        <button class="btn-gray" onclick="backToList()">Back</button>
+        <p id="updateMsg"></p>
+    </div>
+</div>
+
+<script>
+/* DARK MODE */
+function toggleDark(){
+  document.body.classList.toggle('dark');
+  localStorage.setItem('darkMode', document.body.classList.contains('dark'));
+}
+
+// Page load hote hi check karo login hai ya nahi
+window.onload = function(){
+  if(localStorage.getItem('darkMode') === 'true'){
+    document.body.classList.add('dark');
+  }
+  const savedEmail = localStorage.getItem('empEmail');
+  const savedName = localStorage.getItem('empName');
+  if(savedEmail && savedName){
+    currentEmail = savedEmail;
+    document.getElementById('empName').innerText = savedName;
+    document.getElementById('header').classList.remove('hidden');
+    document.getElementById('loginDiv').classList.add('hidden');
+    document.getElementById('orderDiv').classList.remove('hidden');
+    loadOrders();
+  }
+  addBillRow(); // Page load pe 1 blank row by default
+}
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyg4ODUSWmfFFZez6duqwFzilWgodsiZCHR5t1xVfpETGcXa9p-uih7eTg9ieqk0ifj4g/exec';
+let currentEmail = '';
+let currentRow = 0;
+let currentOrderId = '';
+
+// STEP 2: Dynamic Bill Functions Added
+function addBillRow(){
+  const table = document.getElementById('billTable');
+  const row = table.insertRow(-1);
+  row.innerHTML = `
+    <td><input type="text" class="itemName" placeholder="Gas Filling"></td>
+    <td><input type="number" class="itemPrice" placeholder="0" oninput="calcTotal()"></td>
+    <td><button type="button" class="btn-danger" onclick="deleteRow(this)">❌</button></td>
+  `;
+}
+
+function deleteRow(btn){
+  const row = btn.parentNode.parentNode;
+  row.parentNode.removeChild(row);
+  calcTotal();
+}
+
+function calcTotal(){
+  let total = 0;
+  const prices = document.querySelectorAll('.itemPrice');
+  prices.forEach(input => {
+    total += Number(input.value) || 0;
+  });
+  document.getElementById('totalAmount').innerText = total;
+}
+
+// Login Function
+function login(){
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  document.getElementById('loginMsg').innerText = 'Checking...';
+  document.getElementById('loginBtn').disabled = true;
+
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    body: new URLSearchParams({action:'login', email, password})
+  })
+.then(res => res.json())
+.then(data => {
+    if(data.status == 'success'){
+      currentEmail = email;
+      localStorage.setItem('empEmail', email);
+      localStorage.setItem('empName', data.name);
+      document.getElementById('empName').innerText = data.name;
+      document.getElementById('header').classList.remove('hidden');
+      document.getElementById('loginDiv').classList.add('hidden');
+      document.getElementById('orderDiv').classList.remove('hidden');
+      loadOrders();
+    } else {
+      document.getElementById('loginMsg').innerText = 'Galat Email ya Password';
+      document.getElementById('loginBtn').disabled = false;
+    }
+  })
+.catch(err => {
+    document.getElementById('loginMsg').innerText = 'Offline: Net connect karke login karo';
+    document.getElementById('loginBtn').disabled = false;
+  });
+}
+
+// Orders Load Karo
+function loadOrders(){
+  document.getElementById('orderList').innerHTML = '<div class="card"><p>Loading...</p></div>';
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    body: new URLSearchParams({action:'getOrders', email: currentEmail})
+  })
+.then(res => res.json())
+.then(data => {
+    let html = '';
+    if(data.length == 0){ html = '<div class="card"><p>Koi pending order nahi hai.</p></div>'; }
+    data.forEach(order => {
+      html += `<div class="order-card">
+        <b>Order #${order.orderId}</b><br>
+        ${order.customer} - ${order.service}<br>
+        📍 ${order.address} | 📞 <a href="tel:${order.phone}">${order.phone}</a><br>
+        <button onclick="showUpdateForm(${order.row}, '${order.orderId}', '${order.customer.replace(/'/g, "\\'")}', '${order.service.replace(/'/g, "\\'")}')">Bill Update</button>
+      </div>`;
+    });
+    document.getElementById('orderList').innerHTML = html;
+  })
+.catch(err => {
+    document.getElementById('orderList').innerHTML = '<div class="card"><p>Offline: Orders load nahi hue</p></div>';
+  });
+}
+
+// Update Form Show Karo
+function showUpdateForm(row, orderId, cust, service){
+  currentRow = row;
+  currentOrderId = orderId;
+  document.getElementById('orderIdSpan').innerText = orderId;
+  document.getElementById('custName').innerText = cust;
+  document.getElementById('serviceName').innerText = service;
+  document.getElementById('orderDiv').classList.add('hidden');
+  document.getElementById('updateDiv').classList.remove('hidden');
+  // Purane bill items clear kar do
+  const table = document.getElementById('billTable');
+  while(table.rows.length > 1){ table.deleteRow(1); }
+  addBillRow();
+  calcTotal();
+}
+
+// STEP 3: updateBill Function Updated
+function updateBill(){
+  const note = document.getElementById('techNote').value;
+  const itemNames = document.querySelectorAll('.itemName');
+  const itemPrices = document.querySelectorAll('.itemPrice');
+
+  let billItems = [];
+  let total = 0;
+
+  for(let i = 0; i < itemNames.length; i++){
+    const name = itemNames[i].value.trim();
+    const price = Number(itemPrices[i].value) || 0;
+    if(name && price > 0){
+      billItems.push(name + ':' + price);
+      total += price;
+    }
+  }
+
+  if(!note || billItems.length === 0){
+    alert('Note aur kam se kam 1 bill item bharo');
+    return;
+  }
+
+  document.getElementById('updateMsg').innerText = 'Updating...';
+  document.getElementById('submitBtn').disabled = true;
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    body: new URLSearchParams({
+      action:'updateBill',
+      row: currentRow,
+      orderId: currentOrderId,
+      note: note,
+      billData: billItems.join(','),
+      totalAmount: total
+    })
+  })
+.then(res => res.json())
+.then(data => {
+    document.getElementById('updateMsg').innerText = 'Bill Submit Ho Gaya! ₹' + total;
+    setTimeout(backToList, 1500);
+  })
+.catch(err => {
+    document.getElementById('updateMsg').innerText = 'Offline: Bill submit nahi hua';
+    document.getElementById('submitBtn').disabled = false;
+  });
+}
+
+function backToList(){
+  document.getElementById('updateDiv').classList.add('hidden');
+  document.getElementById('orderDiv').classList.remove('hidden');
+  document.getElementById('techNote').value = '';
+  document.getElementById('updateMsg').innerText = '';
+  document.getElementById('submitBtn').disabled = false;
+  loadOrders();
+}
+
+function logout(){
+  localStorage.removeItem('empEmail'); // ← Ye line add kar
+  localStorage.removeItem('empName'); // ← Ye line add kar
+  localStorage.removeItem('darkMode');
+  location.reload();
+}
+</script>
+</body>
+</html>
