@@ -1,0 +1,354 @@
+<!-- UPDATE 03-MAY-2026 12:10PM -->
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SevaGhar - Seva Se Ghar Tak</title>
+<meta name="description" content="Seva Se Ghar Tak. 30 min me ghar par. 30 din warranty. Call +918840095024">
+
+<!-- PWA Support -->
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#1e3a8a">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,sans-serif}
+
+body{
+  background:#f1f5f9;
+  color:#0f172a;
+}
+
+/* HEADER */
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 15px;
+  background:#fff;
+  position:sticky;
+  top:0;
+  z-index:999;
+  border-bottom:1px solid #eee;
+}
+
+.logo img{
+  height:70px;
+  width:auto;
+  object-fit:contain;
+}
+
+.call a{
+  color:#16a34a;
+  font-weight:bold;
+  text-decoration:none;
+  font-size:15px;
+}
+
+/* HERO */
+.hero{
+  padding:20px 15px;
+}
+
+.hero-box{
+  background:linear-gradient(135deg,#1e3a8a,#16a34a);
+  color:#fff;
+  padding:20px;
+  border-radius:16px;
+}
+
+.hero h1{
+  font-size:20px;
+  line-height:1.4;
+}
+
+.hero p{
+  font-size:13px;
+  margin-top:8px;
+  opacity:0.9;
+}
+
+/* BADGES */
+.badges{
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+  flex-wrap:wrap;
+}
+
+.badge{
+  background:rgba(255,255,255,0.2);
+  padding:6px 10px;
+  border-radius:20px;
+  font-size:11px;
+}
+
+/* ACTION BUTTONS */
+.actions{
+  margin-top:15px;
+  display:flex;
+  gap:10px;
+}
+
+.btn{
+  flex:1;
+  text-align:center;
+  padding:12px;
+  border-radius:10px;
+  font-weight:bold;
+  text-decoration:none;
+}
+
+.primary{
+  background:#fff;
+  color:#0f172a;
+}
+
+.secondary{
+  border:1px solid #fff;
+  color:#fff;
+}
+
+/* SERVICES */
+.services{
+  padding:15px;
+}
+
+.services h2{
+  margin-bottom:10px;
+  font-size:18px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.card{
+  background:#fff;
+  padding:14px;
+  border-radius:14px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.05);
+}
+
+.card h3{font-size:14px}
+
+.price{
+  color:#16a34a;
+  font-weight:bold;
+  margin:5px 0;
+  font-size:13px;
+}
+
+.book{
+  margin-top:8px;
+  display:block;
+  text-align:center;
+  background:#0f172a;
+  color:#fff;
+  padding:8px;
+  border-radius:8px;
+  text-decoration:none;
+  font-size:12px;
+}
+
+/* TRUST */
+.trust{
+  display:flex;
+  justify-content:space-around;
+  background:#fff;
+  margin:10px;
+  padding:12px;
+  border-radius:12px;
+  font-size:12px;
+}
+
+/* WHATSAPP */
+.whatsapp{
+  position:fixed;
+  right:15px;
+  bottom:90px;
+  background:#25d366;
+  color:#fff;
+  padding:12px 16px;
+  border-radius:50px;
+  border:none;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 4px 12px rgba(0,0,0,0.3);
+  z-index:998;
+  font-size:14px;
+}
+
+/* STICKY BOOK BAR */
+.bottom-bar{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  background:#fff;
+  padding:10px;
+  border-top:1px solid #ddd;
+  z-index:999;
+}
+
+.bottom-btn{
+  display:block;
+  text-align:center;
+  background:#16a34a;
+  color:#fff;
+  padding:14px;
+  border-radius:10px;
+  font-weight:bold;
+  text-decoration:none;
+}
+
+/* FOOTER - 3 LINKS ADD KIYE */
+footer{
+  text-align:center;
+  font-size:12px;
+  color:#64748b;
+  padding:20px;
+  padding-bottom:80px;
+}
+footer a{
+  color:#1e3a8a;
+  text-decoration:none;
+}
+.footer-links{
+  margin-top:8px;
+  font-size:14px;
+}
+.footer-admin{
+  margin-top:12px;
+  font-size:11px;
+  opacity:0.5;
+}
+.footer-admin a{
+  color:inherit;
+  margin:0 8px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">
+    <!-- YAHAN APNA LOGO LAGANA HAI: logo.png 150x50px -->
+    <img src="./logo.png" alt="SevaGhar Logo">
+  </div>
+  <div class="call">
+    <a href="tel:+918765481479">📞 Call</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-box">
+    <h1>AC, RO, Plumber, Electrician, Chef<br>Ab Sab Jhatpat Se Ghar Par</h1>
+    <p>Verified Mistri | COD | Trusted Service</p>
+
+    <div class="badges">
+      <div class="badge">⚡ Quick</div>
+      <div class="badge">🛡️ 30 Days Warranty</div>
+      <div class="badge">⭐ 500+ Happy</div>
+    </div>
+
+    <div class="actions">
+      <a href="#services" class="btn primary">Book Service</a>
+      <a href="./track.html" class="btn secondary">Track</a>
+    </div>
+  </div>
+</section>
+
+<section id="services" class="services">
+<h2>Popular Services</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>❄️ AC Service</h3>
+<p class="price">₹699 se</p>
+<a href="./Booking.html" class="book">Book Now</a>
+</div>
+
+<div class="card">
+<h3>💧 RO Service</h3>
+<p class="price">₹299 se</p>
+<a href="./Booking.html" class="book">Book Now</a>
+</div>
+
+<div class="card">
+<h3>🔧 Plumber</h3>
+<p class="price">₹199 se</p>
+<a href="./Booking.html" class="book">Book Now</a>
+</div>
+
+<div class="card">
+<h3>💡 Electrician</h3>
+<p class="price">₹199 se</p>
+<a href="./Booking.html" class="book">Book Now</a>
+</div>
+
+<div class="card">
+<h3>👨‍🍳 Chef/Cook</h3>
+<p class="price">₹499 se</p>
+<a href="./Booking.html" class="book">Book Now</a>
+</div>
+
+<div class="card">
+<h3>🎀 Party Decoration</h3>
+<p class="price">₹799 se</p>
+<a href="./Booking.html" class="book">Book Now</a>
+</div>
+
+</div>
+</section>
+
+<section class="trust">
+<div>✅ Verified</div>
+<div>⚡ Fast</div>
+<div>🛡️ Warranty</div>
+</section>
+
+<footer>
+<p> Udyam Reg No: UDYAM-UP-50-0272690</p>
+<p>© 2026 SevaGhar | Lucknow | +918765481479 | support@sevagharlko.in</p>
+
+<!-- 3 LINKS WAPAS ADD KIYE -->
+<p class="footer-links">
+  <a href="./terms.html">Terms & Conditions</a> | 
+  <a href="./privacy.html">Privacy Policy</a> | 
+  <a href="./refund.html">Refund Policy</a>
+</p>
+<p class="footer-admin">
+  <a href="./employee.html">Staff Portal</a>
+</p>
+</footer>
+
+<button onclick="wa()" class="whatsapp">WhatsApp</button>
+
+<div class="bottom-bar">
+<a href="./Booking.html" class="bottom-btn">⚡ Book Service Now</a>
+</div>
+
+<script>
+// Service Worker Registration
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js');
+}
+
+// WhatsApp with Offline Check
+function wa(){
+  if(navigator.onLine){
+    window.open('https://wa.me/918765481479?text=Namaste%20SevaGhar,%20Mujhe%20service%20book%20karni%20hai', '_blank');
+  } else {
+    alert('Offline hai. WhatsApp ke liye internet on kariye.');
+  }
+}
+</script>
+
+</body>
+</html>
