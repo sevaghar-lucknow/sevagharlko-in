@@ -156,6 +156,20 @@ header{
   font-size:12px;
 }
 
+/* ADD KIYA: Disabled button ka style */
+.book:disabled{
+  background:#ccc;
+  cursor:not-allowed;
+  opacity:0.6;
+}
+.unavailable-msg{
+  display:none;
+  color:#dc2626;
+  font-size:11px;
+  margin-top:5px;
+  text-align:center;
+}
+
 /* TRUST */
 .trust{
   display:flex;
@@ -270,40 +284,47 @@ footer a{
 
 <div class="grid">
 
-<div class="card">
+<!-- ADD KIYA: data-service attribute -->
+<div class="card" data-service="ac_service">
 <h3>❄️ AC Service</h3>
 <p class="price">₹699 se</p>
 <a href="./Booking.html" class="book">Book Now</a>
+<p class="unavailable-msg">AC Service currently unavailable</p>
 </div>
 
-<div class="card">
+<div class="card" data-service="ro_service">
 <h3>💧 RO Service</h3>
 <p class="price">₹299 se</p>
 <a href="./Booking.html" class="book">Book Now</a>
+<p class="unavailable-msg">RO Service currently unavailable</p>
 </div>
 
-<div class="card">
+<div class="card" data-service="plumber">
 <h3>🔧 Plumber</h3>
 <p class="price">₹199 se</p>
 <a href="./Booking.html" class="book">Book Now</a>
+<p class="unavailable-msg">Plumber currently unavailable</p>
 </div>
 
-<div class="card">
+<div class="card" data-service="electrician">
 <h3>💡 Electrician</h3>
 <p class="price">₹199 se</p>
 <a href="./Booking.html" class="book">Book Now</a>
+<p class="unavailable-msg">Electrician currently unavailable</p>
 </div>
 
-<div class="card">
+<div class="card" data-service="chef">
 <h3>👨‍🍳 Chef/Cook</h3>
 <p class="price">₹499 se</p>
 <a href="./Booking.html" class="book">Book Now</a>
+<p class="unavailable-msg">Chef currently unavailable</p>
 </div>
 
-<div class="card">
+<div class="card" data-service="party_decoration">
 <h3>🎀 Party Decoration</h3>
 <p class="price">₹799 se</p>
 <a href="./Booking.html" class="book">Book Now</a>
+<p class="unavailable-msg">Party Decoration currently unavailable</p>
 </div>
 
 </div>
@@ -321,8 +342,8 @@ footer a{
 
 <!-- 3 LINKS WAPAS ADD KIYE -->
 <p class="footer-links">
-  <a href="./terms.html">Terms & Conditions</a> | 
-  <a href="./privacy.html">Privacy Policy</a> | 
+  <a href="./terms.html">Terms & Conditions</a> |
+  <a href="./privacy.html">Privacy Policy</a> |
   <a href="./refund.html">Refund Policy</a>
 </p>
 <p class="footer-admin">
@@ -350,6 +371,27 @@ function wa(){
     alert('Offline hai. WhatsApp ke liye internet on kariye.');
   }
 }
+
+// ADD KIYA: Service ON/OFF toggle logic
+fetch('services.json?t=' + Date.now())
+.then(res => res.json())
+.then(services => {
+  document.querySelectorAll('.card').forEach(card => {
+    let name = card.dataset.service;
+    let btn = card.querySelector('.book');
+    let msg = card.querySelector('.unavailable-msg');
+
+    if(services[name] === 'off') {
+      btn.style.pointerEvents = 'none';
+      btn.classList.add('disabled');
+      btn.style.background = '#ccc';
+      btn.style.cursor = 'not-allowed';
+      btn.innerText = 'Unavailable';
+      msg.style.display = 'block';
+    }
+  });
+})
+.catch(err => console.log('services.json not found'));
 </script>
 
 </body>
