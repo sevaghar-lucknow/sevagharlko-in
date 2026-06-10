@@ -373,7 +373,7 @@ function wa(){
 }
 
 // ADD KIYA: Service ON/OFF toggle logic
-fetch('services.json?t=' + Date.now())
+fetch('./services.json?v=' + new Date().getTime())
 .then(res => res.json())
 .then(services => {
   document.querySelectorAll('.card').forEach(card => {
