@@ -1,0 +1,8 @@
+{
+  "ac_service": "on",
+  "ro_service": "on",
+  "plumber": "on",
+  "electrician": "off",
+  "chef": "off",
+  "party_decoration": "on"
+}
