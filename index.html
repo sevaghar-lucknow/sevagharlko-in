@@ -373,25 +373,52 @@ function wa(){
 }
 
 // ADD KIYA: Service ON/OFF toggle logic
-fetch('./services.json?v=' + new Date().getTime())
-.then(res => res.json())
-.then(services => {
-  document.querySelectorAll('.card').forEach(card => {
-    let name = card.dataset.service;
-    let btn = card.querySelector('.book');
-    let msg = card.querySelector('.unavailable-msg');
+let lastStatus = localStorage.getItem('lastServiceStatus') || ''; // Offline ke liye save
 
-    if(services[name] === 'off') {
-      btn.style.pointerEvents = 'none';
-      btn.classList.add('disabled');
-      btn.style.background = '#ccc';
-      btn.style.cursor = 'not-allowed';
-      btn.innerText = 'Unavailable';
-      msg.style.display = 'block';
-    }
-  });
-})
-.catch(err => console.log('services.json not found'));
+function applyServiceStatus() {
+  fetch('./services.json?t=' + Date.now(), {cache: 'reload'})
+  .then(res => {
+      if(!res.ok) throw new Error('Network fail');
+      return res.json();
+    })
+  .then(services => {
+      let currentStatus = JSON.stringify(services);
+      if(currentStatus === lastStatus) return;
+
+      lastStatus = currentStatus;
+      localStorage.setItem('lastServiceStatus', currentStatus); // Offline backup
+
+      document.querySelectorAll('.card').forEach(card => {
+        let name = card.dataset.service;
+        let btn = card.querySelector('.book');
+        let msg = card.querySelector('.unavailable-msg');
+        if(!btn) return;
+
+        if(services[name] === 'off') {
+          btn.disabled = true;
+          btn.style.background = '#ccc';
+          btn.style.cursor = 'not-allowed';
+          btn.innerText = 'Unavailable';
+          if(msg) msg.style.display = 'block';
+        } else {
+          btn.disabled = false;
+          btn.style.background = '#0f172a';
+          btn.style.cursor = 'pointer';
+          btn.innerText = 'Book Now';
+          if(msg) msg.style.display = 'none';
+        }
+      });
+    })
+  .catch(err => {
+      // Net nahi hai to purana wala status hi chalne de
+      console.log('Offline mode: Purana status chal raha hai');
+    });
+}
+
+// App khulte hi ek baar chala do
+applyServiceStatus();
+// Har 5 sec baad check
+setInterval(applyServiceStatus, 5000);
 </script>
 
 </body>
