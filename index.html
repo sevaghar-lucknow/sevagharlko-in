@@ -406,7 +406,7 @@ function applySavedStatus(services) {
 
 // 3. GitHub se naya status lane ka function
 function applyServiceStatus() {
-  fetch('./services.json?t=' + Date.now(), {cache: 'reload'})
+  fetch('./services.json?v=' + Date.now(), {cache: 'no-store'}) // ← BAS YE LINE CHANGE
 .then(res => {
       if(!res.ok) throw new Error('Network fail');
       return res.json();
