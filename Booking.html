@@ -104,12 +104,12 @@
                 
                 <input type="text" name="time" placeholder="Problem kya? Kab Chahiye? Ex: Kal 11 baje" required>
 
-                <!-- PIN FIELD ADDED -->
+                <!-- PIN FIELD FIXED -->
                 <div class="pin-box">
-                    <label style="font-weight:bold;font-size:14px">🔐 4-Digit Security PIN Banao *</label>
-                    <input type="password" name="custPin" placeholder="1234" maxlength="4" pattern="[0-9]{4}" required style="margin-top:5px">
+                    <label style="font-weight:bold;font-size:14px">🔐 Apna PIN Banao *</label>
+                    <input type="text" name="custPin" placeholder="Ex: Shiv1438" maxlength="20" required style="margin-top:5px">
                     <p style="font-size:12px;color:#92400e;margin:5px 0 0 0">
-                        Ye PIN se aap apni booking track kar paoge. Yaad rakho!
+                        Ye PIN se aap apni booking track kar paoge. Case sensitive hai. Yaad rakho!
                     </p>
                 </div>
 
@@ -169,16 +169,16 @@
     window.addEventListener('online', offlineBookingSyncKaro);
     offlineBookingSyncKaro();
 
-    // FORM SUBMIT - PIN VALIDATION ADDED
+    // FORM SUBMIT - PIN VALIDATION FIXED
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
         let btn = document.getElementById('submitBtn');
-        let custPin = document.querySelector('[name="custPin"]').value;
+        let custPin = document.querySelector('[name="custPin"]').value.trim();
         
-        // PIN Check
-        if(custPin.length!== 4 ||!/^[0-9]+$/.test(custPin)){
-          alert('4 digit ka PIN daalo');
+        // PIN Check - FIXED: Ab sirf khali na ho
+        if(custPin.length < 1){
+          alert('PIN daalo');
           return;
         }
         
@@ -192,7 +192,7 @@
             pincode: document.querySelector('[name="pincode"]').value,
             service: document.querySelector('[name="service"]').value,
             time: document.querySelector('[name="time"]').value,
-            custPin: custPin, // ← PIN add kiya
+            custPin: custPin, // ← PIN waisa ka waisa jayega
             timestamp: new Date().toLocaleString()
         };
         
