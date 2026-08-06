@@ -26,12 +26,12 @@
     <div class="container">
         <h2>Apni Booking Track Kare</h2>
         
-        <!-- Phone + PIN Input - UPDATED -->
+        <!-- Phone + PIN Input - FIXED -->
         <div class="card">
             <h3>Secure Login</h3>
             <div class="grid-2">
                 <input type="tel" id="phoneInput" placeholder="10 digit mobile" maxlength="10" pattern="[0-9]{10}">
-                <input type="password" id="pinInput" placeholder="4 digit PIN" maxlength="4" pattern="[0-9]{4}">
+                <input type="text" id="pinInput" placeholder="Apna PIN daale: Shiv1438" maxlength="20">
             </div>
             <button onclick="trackOrder()" id="trackBtn">Login & Track</button>
             <p id="trackMsg" style="margin-top:10px;font-size:14px"></p>
@@ -53,15 +53,15 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyg4ODUSWmfFFZez6duq
 
 function trackOrder(){
   const phone = document.getElementById('phoneInput').value.trim();
-  const pin = document.getElementById('pinInput').value.trim();
+  const pin = document.getElementById('pinInput').value.trim(); // CASE SENSITIVE RAHEGA
   
   if(phone.length!== 10 ||!/^[0-9]+$/.test(phone)){
     document.getElementById('trackMsg').innerText = 'Sahi 10 digit number daalo';
     document.getElementById('trackMsg').style.color = '#dc2626';
     return;
   }
-  if(pin.length!== 4 ||!/^[0-9]+$/.test(pin)){
-    document.getElementById('trackMsg').innerText = '4 digit PIN daalo';
+  if(pin.length < 1){ // FIXED: Ab khali nahi hona chahiye bas
+    document.getElementById('trackMsg').innerText = 'PIN daalo';
     document.getElementById('trackMsg').style.color = '#dc2626';
     return;
   }
@@ -72,7 +72,7 @@ function trackOrder(){
 
   fetch(SCRIPT_URL, {
     method: 'POST',
-    body: new URLSearchParams({action: 'customerLogin', phone: phone, pin: pin})
+    body: new URLSearchParams({action: 'customerLogin', phone: phone, pin: pin}) // PIN waisa ka waisa jayega
   })
 .then(res => res.json())
 .then(data => {
