@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sevaghar-v24'; // ← v23 se v24 kar de, naya SW force hoga
+const CACHE_NAME = 'sevaghar-v25'; // ← v23 se v24 kar de, naya SW force hoga
 
 const urlsToCache = [
   './',
