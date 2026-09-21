@@ -4,5 +4,7 @@
   "plumber": "on",
   "electrician": "on",
   "chef": "off",
-  "party_decoration": "on"
+  "party_decoration": "on",
+  "curtain_&_blinds_installer": "on",
+  "pop/false_ceiling_&_pvc_panel_installer": "on"
 }
